@@ -4,11 +4,8 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
-// GENERATE CONFIG FILE WITH `npx prisma generate`
-
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -17,16 +14,16 @@ datasource db {
 }
 
 model User {
-  id          Int     @id @default(autoincrement())
-  username    String  @unique
-  password    String
-  todos       Todo[]
+  id        Int       @id @default(autoincrement())
+  username  String    @unique
+  password  String
+  todos     Todo[]
 }
 
 model Todo {
-  id          Int     @id @default(autoincrement())
-  task        String
-  completed   Boolean @default(false)
-  userId      Int
-  user        User    @relation(fields: [userId], references: [id])
+  id        Int       @id @default(autoincrement())
+  task      String
+  completed Boolean   @default(false)
+  userId    Int   
+  user      User      @relation(fields: [userId], references: [id])
 }

@@ -4,7 +4,7 @@ import prisma from '../prismaClient.js';
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-    const todos = await prisma.todo.findManay({
+    const todos = await prisma.todo.findMany({
         where: {
             userID: req.userID
         }

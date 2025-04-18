@@ -4,7 +4,7 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
-// GENERATE CONFIG FILE WITH ``
+// GENERATE CONFIG FILE WITH `npx prisma generate`
 
 generator client {
   provider = "prisma-client-js"
