@@ -2,15 +2,12 @@
 
 This project was built on Express and Node JS.
 
-Boot commands for root installation:
+Build docker container via: (Docker Desktop must be open while running these commands)
 
 ```powershell
-npm init
-npm install express bcryptjs jsonwebtoken
+docker compose build
+docker compose run app npx prisma migrate dev --name init
+docker compose up
 ```
 
-**NODE NOTICE:** Whne running via node simply type `node server.js` to start your server, and ctrl + c to kill the server.
-
-**NPM NOTICE:** Type `npm run dev` to execute the program via npmk, and ctrl + c to kill the server.
-
-**CONTINUOUS DEVELOPEMENT:** Use `npm install --save-dev nodemon`.
+**NOTICE:** The prisma migrate command simply loads and initializes the prisma database

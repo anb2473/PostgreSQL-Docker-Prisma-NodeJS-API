@@ -1,0 +1,26 @@
+# USE AN OFFICIAL NODE JS RUNTIME AS PARENT IMAGE
+FROM node:23-alpine
+
+# SET WORKING DIRECTORY IN CONTAINER
+WORKDIR /app
+
+# COPY PACKAGE.JSON AND PACKAGE-LOCK.JSON TO WORKING DIRECTORY
+COPY package*.json .
+
+# INSTALL DEPENDENCIES
+RUN npm install
+
+# COPY PRISMA
+COPY prisma ./prisma
+
+# GENERATE PRISMA CLIENT
+RUN npx prisma generate
+
+# COPY ALL FILES TO WORKING DIRECTORY
+COPY . .
+
+# EXPOSE PORT 8000 (allow program to access port 8000: Docker containers are naturally isolated)
+EXPOSE 8000
+
+# DEFINE RUN COMMAND
+CMD ["node", "./server.js"]

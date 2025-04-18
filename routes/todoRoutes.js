@@ -1,36 +1,55 @@
 import express from 'express';
-import db from '../db.js';
+import prisma from '../prismaClient.js';
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    const getTodos = db.prepare(`SELECT * FROM todos WHERE user_id = ?`);
-    const todos = getTodos.all(req.userID); // req.user.id is set in auth middleware
+router.get('/', async (req, res) => {
+    const todos = await prisma.todo.findManay({
+        where: {
+            userID: req.userID
+        }
+    })
     res.json(todos);
 })
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
     const {task} = req.body;
-    const insertTodo = db.prepare(`INSERT INTO todos (user_id, task) VALUES (?, ?)`);
-    const result = insertTodo.run(req.userID, task); // req.user.id is set in auth middleware
-    res.json({id: result.lastInsertRowid, task: task, completed: 0})
+    const todo = await prisma.todo.create({
+        data: {
+            task: task,
+            userID: req.userID
+        }
+    })
+    res.json(todo)
 })
 
 // Dynamic id to edit specific todo id
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
     const {completed} = req.body;
     const {id} = req.params; // Get id from params
-    const updateTodo = db.prepare(`UPDATE todos SET completed = ? WHERE id = ?`);
-    updateTodo.run(completed, id);
+    
+    const updatedTodo = await prisma.todo.update({
+        where: {
+            id: parseInt(id),
+            userID: req.userID
+        },
+        data: {
+            completed: !!completed
+        }
+    })
 
-    res.json({message: "Todo completed"})
+    res.json(updatedTodo)
 })
 
 // Dynamic id to delete specific todo id
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
     const {id} = req.params;
-    const deleteTodo = db.prepare(`DELETE FROM todos WHERE id = ? AND user_id = ?`);
-    deleteTodo.run(id, req.userID); // req.user.id is set in auth middleware
+    await prisma.todo.delete({
+        where: {
+            id: parseInt(id),
+            userID: req.userID
+        }
+    })
     res.json({message: "Todo deleted"})
 })
 
