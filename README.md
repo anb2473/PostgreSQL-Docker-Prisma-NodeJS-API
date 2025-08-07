@@ -1,3 +1,5 @@
+This project is no longer being maintained.
+
 # Project Description
 
 This project was built on Express and Node JS.
